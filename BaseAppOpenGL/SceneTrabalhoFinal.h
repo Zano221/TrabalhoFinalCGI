@@ -23,7 +23,12 @@ public:
 	void Draw3DSGrid(float width, float length);
 	void DrawAxis();
 
-	
+
+	///////////// FUNÇÕES DO TRABALHO FINAL /////////////////
+	void DrawGround();
+	void DrawHouse();
+	void DrawOcean();
+
 private:
 
 	bool	keys[256];		// Array usado para rotinas do teclado
@@ -57,6 +62,7 @@ private:
 
 
 	CModel_3DS* pModel_CasaCJ;
+
 
 };
 
