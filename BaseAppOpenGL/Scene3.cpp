@@ -102,7 +102,7 @@ CScene3::CScene3()
 
 
 	pModel3DS = new CModel_3DS();
-	pModel3DS->Load("../Scene1/CasaCJ.3DS");
+	pModel3DS->Load("../SceneTrabalhoFinal/CasaCJ.3DS");
 
 }
 

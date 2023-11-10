@@ -55,7 +55,7 @@ void CSceneManager::ChangeScene(unsigned int _uiCurrentScene)
 	}	
 	
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	/*switch (uiCurrentScene)
+	switch (uiCurrentScene)
 	{
 	case 1:
 		this->Scene = new CScene1();
@@ -82,10 +82,10 @@ void CSceneManager::ChangeScene(unsigned int _uiCurrentScene)
 		break;
 
 	case 7:
-		this->Scene = new CScene7();
+		this->Scene = new CSceneTrabalhoFinal();
 		break;
 
-	}*/
+	}
 
 	
 }
@@ -140,14 +140,14 @@ void CSceneManager::KeyDownPressed(WPARAM wParam)
 {
 	Scene->KeyDownPressed(wParam);
 
-	/*// Carrega nova cena...
+	// Carrega nova cena...
 	if (wParam == '1') ChangeScene(1);
 	if (wParam == '2') ChangeScene(2);
 	if (wParam == '3') ChangeScene(3);
 	if (wParam == '4') ChangeScene(4);
 	if (wParam == '5') ChangeScene(5);
 	if (wParam == '6') ChangeScene(6);
-	if (wParam == '7') ChangeScene(7);*/
+	if (wParam == '7') ChangeScene(7);
 	
 
 }

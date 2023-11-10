@@ -36,9 +36,9 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	//pTextures = new CTexture();	
 
 	// Carrega a casa
+	pModel_CasaCJ = NULL;
 	pModel_CasaCJ = new CModel_3DS();
-	pModel_CasaCJ->Load("../Scene1/CasaCJ.3DS");
-
+	pModel_CasaCJ->Load("../SceneTrabalhoFinal/CasaCJ.3DS");
 }
 
 
@@ -139,6 +139,7 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 
 	// Renderizar a casa do CJ
 	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	pModel_CasaCJ->Draw();
 	glPopMatrix();
 

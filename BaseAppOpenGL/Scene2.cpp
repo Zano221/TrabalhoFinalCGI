@@ -34,7 +34,7 @@ CScene2::CScene2()
 
 	// Carrega os Shader Programs
 	pShaderMgr = new CShaderManager();
-	pShaderMgr->InitShaderManager("../Scene2/SpotLightShader.vert",  "../Scene2/SpotLightShader.frag");
+	pShaderMgr->InitShaderManager("../Scene2/SpotLightShader.vert", "../Scene2/SpotLightShader.frag");
 	bActiveShaderProgram = false;
 
 	LightAmbient[0] = 0.0f;		LightAmbient[1] = 0.0f;		LightAmbient[2] = 0.0f;	LightAmbient[3] = 1.0f;
@@ -55,7 +55,7 @@ CScene2::CScene2()
 	// Armazena posição da variável "interna"
 	uinterna = glGetUniformLocation(pShaderMgr->id(0), "interna");
 	// Inicializa o valor de cosborda
-	cosborda = cos((cutoff-borda) * GL_PI / 180.0f);
+	cosborda = cos((cutoff - borda) * GL_PI / 180.0f);
 
 
 	// Criando a SpotLight
@@ -164,7 +164,7 @@ int CScene2::DrawGLScene(void)	// Função que desenha a cena
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
 	//glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, borda);	
 	//glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDirection);	
-	
+
 	// Seta as posições da câmera
 	pCamera->setView();
 
@@ -177,13 +177,13 @@ int CScene2::DrawGLScene(void)	// Função que desenha a cena
 	glEnable(GL_LIGHTING);
 
 	// Habilita a luz
-	glEnable(GL_LIGHT0);	
+	glEnable(GL_LIGHT0);
 
 
 	// Ativa ou não o Shader Program (TRUE = Spotlight per Pixel | FALSE = Spotlight per Vertex)
 	if (bActiveShaderProgram == true)
 	{
-		pShaderMgr->bind(0);	
+		pShaderMgr->bind(0);
 		glUniform1f(uinterna, cosborda); 	// E envia o valor atual da borda para o shader
 	}
 
@@ -191,9 +191,9 @@ int CScene2::DrawGLScene(void)	// Função que desenha a cena
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Cor branca para os polígonos
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	glEnable(GL_TEXTURE_2D);	// Habilita Textura
 
@@ -208,8 +208,8 @@ int CScene2::DrawGLScene(void)	// Função que desenha a cena
 	pModel3DS2->Draw();
 
 
-	
-	
+
+
 	glDisable(GL_TEXTURE_2D);	// Desabilita Textura
 
 	glDisable(GL_LIGHT0);
@@ -221,12 +221,12 @@ int CScene2::DrawGLScene(void)	// Função que desenha a cena
 		pShaderMgr->unbind();
 	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                               DESENHA OS OBJETOS DA CENA (FIM)
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Impressão de texto na tela...
-	// Muda para modo de projeção ortogonal 2D
-	// OBS: Desabilite Texturas e Iluminação antes de entrar nesse modo de projeção
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                               DESENHA OS OBJETOS DA CENA (FIM)
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Impressão de texto na tela...
+		// Muda para modo de projeção ortogonal 2D
+		// OBS: Desabilite Texturas e Iluminação antes de entrar nesse modo de projeção
 	OrthoMode(0, 0, WIDTH, HEIGHT);
 
 
@@ -326,7 +326,7 @@ void CScene2::KeyPressed(void) // Tratamento de teclas pressionadas
 
 	// Verifica se a tecla 'SPACE' foi pressionada e inicia pulo do Player
 	if (GetKeyState(VK_SPACE) & 0x80)
-	{		
+	{
 	}
 
 	if (GetKeyState(VK_UP) & 0x80)
