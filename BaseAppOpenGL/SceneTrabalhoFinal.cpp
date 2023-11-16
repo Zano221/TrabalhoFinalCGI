@@ -38,7 +38,7 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	// Carrega a casa
 	pModel_CasaCJ = NULL;
 	pModel_CasaCJ = new CModel_3DS();
-	pModel_CasaCJ->Load("../SceneTrabalhoFinal/CasaCJ.3DS");
+	pModel_CasaCJ->Load("../SceneTrabalhoFinal/teste.3DS");
 }
 
 
