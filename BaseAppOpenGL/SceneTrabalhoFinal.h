@@ -5,6 +5,8 @@
 #include "CTexto.h"
 #include "CCamera.h"
 #include "CModel_3DS.h"
+#include <vector>
+#include <glm/glm.hpp>
 
 
 
@@ -31,6 +33,7 @@ public:
 	void CreateSkyBox(float x, float y, float z,
 		float width, float height, float length,
 		CTexture* pTextures);
+	glm::vec3 CalculateTriangleNormalVector(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 
 private:
 
@@ -80,7 +83,8 @@ private:
 	GLfloat LightAmbient[4];
 	GLfloat LightDiffuse[4];
 	GLfloat LightSpecular[4];
-	GLfloat LightPosition[4];
+	GLfloat LightPosition[5][4];
+	GLfloat LightDirection[3];
 
 	// Definição das configurações do material do objeto (REFLEXÂO)
 	GLfloat MatAmbient[4];

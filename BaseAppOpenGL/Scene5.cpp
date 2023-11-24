@@ -178,7 +178,7 @@ int CScene5::DrawGLScene(void)	// Função que desenha a cena
 
 
 	// Desenha Árvore
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	/*glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.5);
 	pTextures->ApplyTexture(7);
@@ -196,7 +196,7 @@ int CScene5::DrawGLScene(void)	// Função que desenha a cena
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f, 15.0f, 10.0f);
 	glEnd();
 	glPopMatrix();
-	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_ALPHA_TEST);*/
 
 
 

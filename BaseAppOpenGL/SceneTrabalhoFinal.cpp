@@ -10,7 +10,7 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	pCamera = NULL;
 	pTexto = NULL;
 	pTextures = NULL;
-	
+
 	bIsWireframe = false;
 	bIsCameraFPS = true;
 
@@ -45,8 +45,9 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	pTextures->CreateTextureClamp(1, "../SceneTrabalhoFinal/front.bmp");
 	pTextures->CreateTextureClamp(2, "../SceneTrabalhoFinal/down.bmp");
 	pTextures->CreateTextureClamp(3, "../SceneTrabalhoFinal/up.bmp");
-	pTextures->CreateTextureClamp(4, "../SceneTrabalhoFinal/left.bmp");
-	pTextures->CreateTextureClamp(5, "../SceneTrabalhoFinal/right.bmp");
+	pTextures->CreateTextureClamp(4, "../SceneTrabalhoFinal/right.bmp");
+	pTextures->CreateTextureClamp(5, "../SceneTrabalhoFinal/left.bmp");
+	pTextures->CreateTextureLinear(6, "../SceneTrabalhoFinal/water.bmp");
 
 	//Carrega a Grove Street
 	pModel_GroveStreet = NULL;
@@ -60,10 +61,16 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 
 	// Definir a iluminação
 	// Definição das configurações da fonte de luz (EMISSOR)
-	LightAmbient[0] = 1.0f; LightAmbient[1] = 1.0f; LightAmbient[2] = 1.0f; LightAmbient[3] = 1.0f;
+	LightAmbient[0] = 0.1f; LightAmbient[1] = 0.1f; LightAmbient[2] = 0.1f; LightAmbient[3] = 1.0f;
 	LightDiffuse[0] = 1.0f; LightDiffuse[1] = 1.0f; LightDiffuse[2] = 1.0f; LightDiffuse[3] = 1.0f;
 	LightSpecular[0] = 1.0f; LightSpecular[1] = 1.0f; LightSpecular[2] = 1.0f; LightSpecular[3] = 1.0f;
-	LightPosition[0] = fPosX; LightPosition[1] = fPosY; LightPosition[2] = fPosZ; LightPosition[3] = 1.0f;
+	LightPosition[0][0] = fPosX; LightPosition[0][1] = fPosY; LightPosition[0][2] = fPosZ; LightPosition[0][3] = 1.0f;
+	LightPosition[1][0] = 0.0f; LightPosition[1][1] = 26.0f; LightPosition[1][2] = 0.0f; LightPosition[1][3] = 1.0f;
+	LightPosition[2][0] = 0.0f; LightPosition[2][1] = 2500.0f; LightPosition[2][2] = 0.0f; LightPosition[2][3] = 1.0f;
+	LightPosition[3][0] = 0.0f; LightPosition[3][1] = 26.0f; LightPosition[3][2] = 0.0f; LightPosition[3][3] = 1.0f;
+	LightPosition[4][0] = 0.0f; LightPosition[4][1] = 26.0f; LightPosition[4][2] = 0.0f; LightPosition[4][3] = 1.0f;
+	LightDirection[0] = 0.0f; LightDirection[1] = -1.0f; LightDirection[2] = 0.0f;
+
 
 	// Definição das configurações do material do objeto (REFLEXÂO)
 	MatAmbient[0] = 0.1f; MatAmbient[1] = 0.1f; MatAmbient[2] = 0.1f; MatAmbient[3] = 1.0f;
@@ -144,7 +151,9 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
+	
+	// Habilita mapeamento de texturas 2D
+	glEnable(GL_TEXTURE_2D);
 
 
 
@@ -152,25 +161,48 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	/////// TÉTCNICAS UTILIZADAS ///////
 	////////////////////////////////////
 
-	/////////////////////////////////////////////////////////
-	// d. Iluminação com alguma fonte de luz(Point, Spot) //
-	/////////////////////////////////////////////////////// 
+	
 
+	////////////////
+	// g. SkyBox //
+	//////////////
 	CreateSkyBox(0.0f, 100.0f, 0.0f,
-		2000.0f, 2000.0f, 2000.0f,
+		2700.0f, 2700.0f, 2700.0f,
 		pTextures);
 
 
+	/////////////////////////////////////////////////////////
+	// d. Iluminação com alguma fonte de luz(Point, Spot) //
+	/////////////////////////////////////////////////////// 
 	glEnable(GL_LIGHTING); //  Habilita iluminação
 
 	//POSTE 1
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition); // 15 36 181
-	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition[0]); // 15 36 181
 	glLightf(GL_LIGHT0, GL_SHININESS, 255);
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45.0f);
+	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDirection);
+
 	glEnable(GL_LIGHT0); // Habilita a luz 0
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition[1]); // 
+	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
+	glLightf(GL_LIGHT1, GL_SHININESS, 255);
+	glEnable(GL_LIGHT1); // Habilita a luz 1
+
+	glLightfv(GL_LIGHT2, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, LightSpecular);
+	glLightfv(GL_LIGHT2, GL_POSITION, LightPosition[2]); //
+	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
+	glLightf(GL_LIGHT2, GL_SHININESS, 255);
+	glEnable(GL_LIGHT2); // Habilita a luz 2
 
 	/////////////////////////////////////////////////////////////
 	// a. Modelagem de objetos usando Modo Imediato(glVertex) //
@@ -183,16 +215,9 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	//////////////////////////////////////////////////////////
 	// c. Mapeamento de texturas usando Unrap UVW(3DS MAX) //
 	//////////////////////////////////////////////////////// 
-	// 
-	/////////////////////////
-	// f. Multi - Textura //
-	////////////////////////
+	
 
-	//Renderizar a Grove Street (b, c, f)
-	glPushMatrix();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	pModel_GroveStreet->Draw();
-	glPopMatrix(); 
+	
 
 	// Renderizar a casa do CJ (b, c)
 	glPushMatrix();
@@ -202,48 +227,92 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	pModel_CasaCJ->Draw();
 	glPopMatrix();
 	
+	//Renderizar a Grove Street (b, c, f)
 	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	pModel_GroveStreet->Draw();
 	glPopMatrix();
 
 	///////////////////////////////////////////
 	// e. Filtro Anisotrópico para texturas //
 	/////////////////////////////////////////
-	
-	glPushMatrix();
-	glPopMatrix();
 
 	
-
-	glPushMatrix();
-	glPopMatrix();
-
-	////////////////
-	// g. SkyBox //
-	//////////////
-	
-	glPushMatrix();
-	glPopMatrix();
 
 	//////////////////////////////////////////////////
 	// h. Environmap Mapping(SphereMap ou CubeMap) //
 	////////////////////////////////////////////////
-	
-	glPushMatrix();
-	glPopMatrix();
 
 	////////////////////////////////
 	// i. Bump ou Normal Mapping //
 	//////////////////////////////
 	
-	glPushMatrix();
-	glPopMatrix();
+
 
 	/////////////////////////////////
 	// k. Transparência(Blending) //
 	///////////////////////////////
+	// 
+	/////////////////////////
+	// f. Multi - Textura //
+	////////////////////////
+
+	// Habilita Blending
+	glEnable(GL_BLEND);
+	// Configura função de Blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
 	
+	// RENDERIZAR O OCEANO
+	glPushAttrib(GL_TEXTURE_BIT);
+	// Unidade de Textura 0
+	glActiveTexture(GL_TEXTURE0);
+	glEnable(GL_TEXTURE_2D);
+	pTextures->ApplyTexture(6);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+
+	// Unidade de Textura 1
+	glActiveTexture(GL_TEXTURE1);
+	glEnable(GL_TEXTURE_2D);
+	pTextures->ApplyTexture(6);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_MODULATE);
+
 	glPushMatrix();
+	glTranslatef(0.0f, 0.0f, 0.0f);
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glMultiTexCoord2f(GL_TEXTURE0, 0.0f, 0.0f + fRenderPosY);
+	glMultiTexCoord2f(GL_TEXTURE1, 0.0f + fRenderPosY, 0.0f);
+	glVertex3f(-2000.0f, -20.0f, 2000.0f);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 1.0f, 0.0f + fRenderPosY);
+	glMultiTexCoord2f(GL_TEXTURE1, 1.0f + fRenderPosY, 0.0f);
+	glVertex3f(2000.0f, -20.0f, 2000.0f);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 1.0f, 1.0f + fRenderPosY);
+	glMultiTexCoord2f(GL_TEXTURE1, 1.0f + fRenderPosY, 1.0f);
+	glVertex3f(2000.0f, -20.0f, -2000.0f);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 0.0f, 1.0f + fRenderPosY);
+	glMultiTexCoord2f(GL_TEXTURE1, 0.0f + fRenderPosY, 1.0f);
+	glVertex3f(-2000.0f, -20.0f, -2000.0f);
+	glEnd();
 	glPopMatrix();
+
+	glActiveTexture(GL_TEXTURE1);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTexture(GL_TEXTURE0);
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+	glPopAttrib();
+
+	// Desabilitar luz
+	glDisable(GL_LIGHTING);
+
 
 	////////////////////////////////////////////////////////////////////
 	// l. Otimização de objetos usando DisplayLists ou Vertex Arrays //
@@ -253,8 +322,7 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glPopMatrix();
 
 	
-	// Desabilitar luz
-	glDisable(GL_LIGHTING);
+	
 
 	////////////////////////////////////////////
 	/////// TÉTCNICAS EXTRAS UTILIZADAS ////////
@@ -274,7 +342,7 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	fTimerPosY = pTimer->GetTime() / 1000.0f;
-	fRenderPosY += 0.2f;
+	fRenderPosY += 0.00025f;
 
 	// Impressão de texto na tela...
 	// Muda para modo de projeção ortogonal 2D
@@ -553,4 +621,46 @@ void CSceneTrabalhoFinal::CreateSkyBox(float x, float y, float z,
 	glEnd();
 
 	glPopMatrix();
+}
+
+glm::vec3 CSceneTrabalhoFinal::CalculateTriangleNormalVector(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3)
+{
+	/*
+			   p3
+			   /\
+			  /  \
+			 /    \
+			/      \
+			+------+
+		   p1      p2
+	*/
+
+	// Encontrar os vetores v1 e v2, resultado da subtração dos vetores (p2 - p1) e 
+	// (p3 - p1), respectivamente
+	glm::vec3 v1, v2;
+	v1.x = p2.x - p1.x;
+	v1.y = p2.y - p1.y;
+	v1.z = p2.z - p1.z;
+
+	v2.x = p3.x - p1.x;
+	v2.y = p3.y - p1.y;
+	v2.z = p3.z - p1.z;
+
+	// Calcular o Cross Product para achar o vetor Normal (não normalizado)
+	glm::vec3 normal;
+	normal.x = v1.y * v2.z - v1.z * v2.y;
+	normal.y = v1.z * v2.x - v1.x * v2.z;
+	normal.z = v1.x * v2.y - v1.y * v2.x;
+
+	// Calcula a magnitude do vetor normal
+	double magnitude = sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+
+	// Normaliza o vetor normal
+	glm::vec3 normalizedVector;
+	normalizedVector.x = normal.x / magnitude;
+	normalizedVector.y = normal.y / magnitude;
+	normalizedVector.z = normal.z / magnitude;
+
+	// Retorna o vetor Normal (normalizado)
+	return normalizedVector;
 }
