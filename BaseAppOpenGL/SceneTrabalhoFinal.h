@@ -28,6 +28,9 @@ public:
 	void DrawGround();
 	void DrawHouse();
 	void DrawOcean();
+	void CreateSkyBox(float x, float y, float z,
+		float width, float height, float length,
+		CTexture* pTextures);
 
 private:
 
@@ -61,8 +64,29 @@ private:
 	///////////// VARIAVEIS DO TRABALHO FINAL /////////////////
 
 
-	CModel_3DS* pModel_CasaCJ;
+	float fPosX;
+	float fPosY;
+	float fPosZ;
 
+	//Texutras
+	//CTexture* pTextures;
+
+	// Modelos 3DS
+	CModel_3DS* pModel_CasaCJ; // Casa do CJ
+	CModel_3DS* pModel_GroveStreet; // Mapa da Grove Street
+
+
+	// Definição das configurações da fonte de luz (EMISSOR)
+	GLfloat LightAmbient[4];
+	GLfloat LightDiffuse[4];
+	GLfloat LightSpecular[4];
+	GLfloat LightPosition[4];
+
+	// Definição das configurações do material do objeto (REFLEXÂO)
+	GLfloat MatAmbient[4];
+	GLfloat MatDiffuse[4];
+	GLfloat MatSpecular[4];
+	float MatShininess;
 
 };
 

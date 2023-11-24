@@ -35,10 +35,41 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	// Carrega todas as texturas
 	//pTextures = new CTexture();	
 
+	fPosX = 15.0f;
+	fPosY = 36.0f;
+	fPosZ = 181.0f;
+
+	// Texturas do Skybox aaa
+	pTextures = new CTexture();
+	pTextures->CreateTextureClamp(0, "../SceneTrabalhoFinal/back.bmp");
+	pTextures->CreateTextureClamp(1, "../SceneTrabalhoFinal/front.bmp");
+	pTextures->CreateTextureClamp(2, "../SceneTrabalhoFinal/down.bmp");
+	pTextures->CreateTextureClamp(3, "../SceneTrabalhoFinal/up.bmp");
+	pTextures->CreateTextureClamp(4, "../SceneTrabalhoFinal/left.bmp");
+	pTextures->CreateTextureClamp(5, "../SceneTrabalhoFinal/right.bmp");
+
+	//Carrega a Grove Street
+	pModel_GroveStreet = NULL;
+	pModel_GroveStreet = new CModel_3DS();
+	pModel_GroveStreet->Load("../SceneTrabalhoFinal/GroveStreet.3DS");
+
 	// Carrega a casa
 	pModel_CasaCJ = NULL;
 	pModel_CasaCJ = new CModel_3DS();
-	pModel_CasaCJ->Load("../SceneTrabalhoFinal/teste.3DS");
+	pModel_CasaCJ->Load("../SceneTrabalhoFinal/CasaCJ.3DS");
+
+	// Definir a iluminação
+	// Definição das configurações da fonte de luz (EMISSOR)
+	LightAmbient[0] = 1.0f; LightAmbient[1] = 1.0f; LightAmbient[2] = 1.0f; LightAmbient[3] = 1.0f;
+	LightDiffuse[0] = 1.0f; LightDiffuse[1] = 1.0f; LightDiffuse[2] = 1.0f; LightDiffuse[3] = 1.0f;
+	LightSpecular[0] = 1.0f; LightSpecular[1] = 1.0f; LightSpecular[2] = 1.0f; LightSpecular[3] = 1.0f;
+	LightPosition[0] = fPosX; LightPosition[1] = fPosY; LightPosition[2] = fPosZ; LightPosition[3] = 1.0f;
+
+	// Definição das configurações do material do objeto (REFLEXÂO)
+	MatAmbient[0] = 0.1f; MatAmbient[1] = 0.1f; MatAmbient[2] = 0.1f; MatAmbient[3] = 1.0f;
+	MatDiffuse[0] = 1.0f; MatDiffuse[1] = 1.0f; MatDiffuse[2] = 1.0f; MatDiffuse[3] = 1.0f;
+	MatSpecular[0] = 0.0f; MatSpecular[1] = 0.0f; MatSpecular[2] = 0.0f; MatSpecular[3] = 1.0f;
+	MatShininess = 128.0f;
 }
 
 
@@ -121,38 +152,55 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	/////// TÉTCNICAS UTILIZADAS ///////
 	////////////////////////////////////
 
+	/////////////////////////////////////////////////////////
+	// d. Iluminação com alguma fonte de luz(Point, Spot) //
+	/////////////////////////////////////////////////////// 
+
+	CreateSkyBox(0.0f, 100.0f, 0.0f,
+		2000.0f, 2000.0f, 2000.0f,
+		pTextures);
+
+
+	glEnable(GL_LIGHTING); //  Habilita iluminação
+
+	//POSTE 1
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition); // 15 36 181
+	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
+	glLightf(GL_LIGHT0, GL_SHININESS, 255);
+	glEnable(GL_LIGHT0); // Habilita a luz 0
+
 	/////////////////////////////////////////////////////////////
 	// a. Modelagem de objetos usando Modo Imediato(glVertex) //
 	///////////////////////////////////////////////////////////
 
-
-	// Renderizar a rua da Grove street
-	glPushMatrix();
-	glColor4b(211, 211, 211, 255);
-	glTranslatef(0.0f, -5.0f, 0.0f);
-
-	glPopMatrix();
-
 	///////////////////////////////////////////////////
 	// b. Modelagem de objetos usando 3DS MAX(.3DS) //
 	/////////////////////////////////////////////////
-
-	// Renderizar a casa do CJ
-	glPushMatrix();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	pModel_CasaCJ->Draw();
-	glPopMatrix();
-
+	//
 	//////////////////////////////////////////////////////////
 	// c. Mapeamento de texturas usando Unrap UVW(3DS MAX) //
 	//////////////////////////////////////////////////////// 
-	
-	glPushMatrix();
-	glPopMatrix();
+	// 
+	/////////////////////////
+	// f. Multi - Textura //
+	////////////////////////
 
-	/////////////////////////////////////////////////////////
-	// d. Iluminação com alguma fonte de luz(Point, Spot) //
-	/////////////////////////////////////////////////////// 
+	//Renderizar a Grove Street (b, c, f)
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	pModel_GroveStreet->Draw();
+	glPopMatrix(); 
+
+	// Renderizar a casa do CJ (b, c)
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glTranslatef(150.0f, 0.0f, -20.0f);
+	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+	pModel_CasaCJ->Draw();
+	glPopMatrix();
 	
 	glPushMatrix();
 	glPopMatrix();
@@ -164,9 +212,7 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glPushMatrix();
 	glPopMatrix();
 
-	/////////////////////////
-	// f. Multi - Textura //
-	////////////////////////
+	
 
 	glPushMatrix();
 	glPopMatrix();
@@ -192,13 +238,6 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glPushMatrix();
 	glPopMatrix();
 
-	//////////////////////
-	// j. Neblina(Fog) //
-	////////////////////
-	
-	glPushMatrix();
-	glPopMatrix();
-
 	/////////////////////////////////
 	// k. Transparência(Blending) //
 	///////////////////////////////
@@ -213,7 +252,9 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glPushMatrix();
 	glPopMatrix();
 
-
+	
+	// Desabilitar luz
+	glDisable(GL_LIGHTING);
 
 	////////////////////////////////////////////
 	/////// TÉTCNICAS EXTRAS UTILIZADAS ////////
@@ -337,7 +378,21 @@ void CSceneTrabalhoFinal::KeyPressed(void) // Tratamento de teclas pressionadas
 	// Senão, interrompe movimento do Player
 	else
 	{
+
 	}
+
+	if (GetKeyState(VK_LEFT) & 0x80)
+		fPosX -= 0.1f;
+	if (GetKeyState(VK_RIGHT) & 0x80)
+		fPosX += 0.1f;
+	if (GetKeyState(VK_UP) & 0x80)
+		fPosZ -= 0.1f;
+	if (GetKeyState(VK_DOWN) & 0x80)
+		fPosZ += 0.1f;
+	if (GetKeyState(VK_PRIOR) & 0x80)
+		fPosY += 0.1f;
+	if (GetKeyState(VK_NEXT) & 0x80)
+		fPosY -= 0.1f;
 
 
 
@@ -413,3 +468,89 @@ void CSceneTrabalhoFinal::DrawAxis()
 }
 
 
+void CSceneTrabalhoFinal::CreateSkyBox(float x, float y, float z,
+	float width, float height, float length,
+	CTexture* pTextures)
+{
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glPushMatrix();
+
+	// Centraliza o Skybox em torno da posição especificada(x, y, z)
+	x = x - width / 2;
+	y = y - height / 2;
+	z = z - length / 2;
+
+
+	// Aplica a textura que representa a parte da frente do skybox (BACK map)
+	pTextures->ApplyTexture(0);
+
+	// Desenha face BACK do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glEnd();
+
+
+	// Aplica a textura que representa a parte da frente do skybox (FRONT map)
+	pTextures->ApplyTexture(1);
+
+	// Desenha face FRONT do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glEnd();
+
+
+	// Aplica a textura que representa a parte da frente do skybox (DOWN map)
+	pTextures->ApplyTexture(2);
+
+	// Desenha face BOTTOM do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glEnd();
+
+
+	// Aplica a textura que representa a parte da frente do skybox (UP map)
+	pTextures->ApplyTexture(3);
+
+	// Desenha face TOP do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y + height, z + length);
+	glEnd();
+
+
+	// Aplica a textura que representa a parte da frente do skybox (LEFT map)
+	pTextures->ApplyTexture(4);
+
+	// Desenha face LEFT do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
+	glEnd();
+
+
+	// Aplica a textura que representa a parte da frente do skybox (RIGHT map)
+	pTextures->ApplyTexture(5);
+
+	// Desenha face RIGHT do cubo do skybox
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glEnd();
+
+	glPopMatrix();
+}
