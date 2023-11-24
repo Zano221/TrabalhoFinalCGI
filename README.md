@@ -5,14 +5,12 @@ Este é o trabalho final da disciplina de Computação Gráfica. Ele é uma cena
 ## Técnicas necessárias
 
 + a. Modelagem de objetos usando Modo Imediato (glVertex)
-+ b. Modelagem de objetos usando 3DS MAX (.3DS)
-+ c. Mapeamento de texturas usando Unrap UVW (3DS MAX)
++ b. Modelagem de objetos usando 3DS MAX (.3DS) ✔
++ c. Mapeamento de texturas usando Unrap UVW (3DS MAX) ✔
 + d. Iluminação com alguma fonte de luz (Point, Spot)
 + e. Filtro Anisotrópico para texturas
-+ f. Multi-Textura
-+ g. SkyBox
-+ h. Environmap Mapping (SphereMap ou CubeMap)
++ f. Multi-Textura ✔
++ g. SkyBox ✔
 + i. Bump ou Normal Mapping
-+ j. Neblina (Fog)
 + k. Transparência (Blending)
 + l. Otimização de objetos usando DisplayLists ou Vertex Arrays
