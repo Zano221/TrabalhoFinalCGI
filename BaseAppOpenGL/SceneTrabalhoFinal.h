@@ -76,14 +76,17 @@ private:
 
 	// Modelos 3DS
 	CModel_3DS* pModel_CasaCJ; // Casa do CJ
+	CModel_3DS* pModel_CasaRyder; // Casa do Ryder
 	CModel_3DS* pModel_GroveStreet; // Mapa da Grove Street
+	CModel_3DS* pModel_CasaSweet;
+
 
 
 	// Definição das configurações da fonte de luz (EMISSOR)
 	GLfloat LightAmbient[4];
 	GLfloat LightDiffuse[4];
 	GLfloat LightSpecular[4];
-	GLfloat LightPosition[5][4];
+	GLfloat LightPosition[4];
 	GLfloat LightDirection[3];
 
 	// Definição das configurações do material do objeto (REFLEXÂO)

@@ -35,9 +35,13 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	// Carrega todas as texturas
 	//pTextures = new CTexture();	
 
-	fPosX = 15.0f;
+	/*fPosX = 15.0f;
 	fPosY = 36.0f;
-	fPosZ = 181.0f;
+	fPosZ = 181.0f;*/
+
+	fPosX = -600.0f;
+	fPosY = 700.0f;
+	fPosZ = 700.0f;
 
 	// Texturas do Skybox aaa
 	pTextures = new CTexture();
@@ -48,28 +52,39 @@ CSceneTrabalhoFinal::CSceneTrabalhoFinal()
 	pTextures->CreateTextureClamp(4, "../SceneTrabalhoFinal/right.bmp");
 	pTextures->CreateTextureClamp(5, "../SceneTrabalhoFinal/left.bmp");
 	pTextures->CreateTextureLinear(6, "../SceneTrabalhoFinal/water.bmp");
+	pTextures->CreateTextureAnisotropic(7, "../SceneTrabalhoFinal/SweBas.jpg");
 
 	//Carrega a Grove Street
 	pModel_GroveStreet = NULL;
 	pModel_GroveStreet = new CModel_3DS();
 	pModel_GroveStreet->Load("../SceneTrabalhoFinal/GroveStreet.3DS");
 
-	// Carrega a casa
+	// Carrega a casa do CJ
 	pModel_CasaCJ = NULL;
 	pModel_CasaCJ = new CModel_3DS();
 	pModel_CasaCJ->Load("../SceneTrabalhoFinal/CasaCJ.3DS");
+
+	// Carrega a casa do Ryder
+	pModel_CasaRyder = NULL;
+	pModel_CasaRyder = new CModel_3DS();
+	pModel_CasaRyder->Load("../SceneTrabalhoFinal/CasaRyder.3DS");
+
+	// Carrega a casa do Swet
+	pModel_CasaSweet = NULL;
+	pModel_CasaSweet = new CModel_3DS();
+	pModel_CasaSweet->Load("../SceneTrabalhoFinal/CasaSweet.3DS");
 
 	// Definir a iluminação
 	// Definição das configurações da fonte de luz (EMISSOR)
 	LightAmbient[0] = 0.1f; LightAmbient[1] = 0.1f; LightAmbient[2] = 0.1f; LightAmbient[3] = 1.0f;
 	LightDiffuse[0] = 1.0f; LightDiffuse[1] = 1.0f; LightDiffuse[2] = 1.0f; LightDiffuse[3] = 1.0f;
 	LightSpecular[0] = 1.0f; LightSpecular[1] = 1.0f; LightSpecular[2] = 1.0f; LightSpecular[3] = 1.0f;
-	LightPosition[0][0] = fPosX; LightPosition[0][1] = fPosY; LightPosition[0][2] = fPosZ; LightPosition[0][3] = 1.0f;
-	LightPosition[1][0] = 0.0f; LightPosition[1][1] = 26.0f; LightPosition[1][2] = 0.0f; LightPosition[1][3] = 1.0f;
-	LightPosition[2][0] = 0.0f; LightPosition[2][1] = 2500.0f; LightPosition[2][2] = 0.0f; LightPosition[2][3] = 1.0f;
-	LightPosition[3][0] = 0.0f; LightPosition[3][1] = 26.0f; LightPosition[3][2] = 0.0f; LightPosition[3][3] = 1.0f;
-	LightPosition[4][0] = 0.0f; LightPosition[4][1] = 26.0f; LightPosition[4][2] = 0.0f; LightPosition[4][3] = 1.0f;
-	LightDirection[0] = 0.0f; LightDirection[1] = -1.0f; LightDirection[2] = 0.0f;
+	LightPosition[0] = fPosX; LightPosition[1] = fPosY; LightPosition[2] = fPosZ; LightPosition[3] = 1.0f;
+	//LightPosition[1][0] = 0.0f; LightPosition[1][1] = 26.0f; LightPosition[1][2] = 0.0f; LightPosition[1][3] = 1.0f;
+	//LightPosition[2][0] = 0.0f; LightPosition[2][1] = 2500.0f; LightPosition[2][2] = 0.0f; LightPosition[2][3] = 1.0f;
+	//LightPosition[3][0] = 0.0f; LightPosition[3][1] = 26.0f; LightPosition[3][2] = 0.0f; LightPosition[3][3] = 1.0f;
+	//LightPosition[4][0] = 0.0f; LightPosition[4][1] = 26.0f; LightPosition[4][2] = 0.0f; LightPosition[4][3] = 1.0f;
+	//LightDirection[0] = 0.0f; LightDirection[1] = -1.0f; LightDirection[2] = 0.0f;
 
 
 	// Definição das configurações do material do objeto (REFLEXÂO)
@@ -109,6 +124,16 @@ CSceneTrabalhoFinal::~CSceneTrabalhoFinal(void)
 	if (pModel_CasaCJ) {
 		delete pModel_CasaCJ;
 		pModel_CasaCJ = NULL;
+	}
+
+	if (pModel_CasaRyder) {
+		delete pModel_CasaRyder;
+		pModel_CasaRyder = NULL;
+	}
+
+	if (pModel_CasaSweet) {
+		delete pModel_CasaSweet;
+		pModel_CasaSweet = NULL;
 	}
 }
 
@@ -176,33 +201,12 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	/////////////////////////////////////////////////////// 
 	glEnable(GL_LIGHTING); //  Habilita iluminação
 
-	//POSTE 1
 	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition[0]); // 15 36 181
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition); //
 	glLightf(GL_LIGHT0, GL_SHININESS, 255);
-	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45.0f);
-	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, LightDirection);
-
-	glEnable(GL_LIGHT0); // Habilita a luz 0
-
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);
-	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition[1]); // 
-	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
-	glLightf(GL_LIGHT1, GL_SHININESS, 255);
-	glEnable(GL_LIGHT1); // Habilita a luz 1
-
-	glLightfv(GL_LIGHT2, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, LightSpecular);
-	glLightfv(GL_LIGHT2, GL_POSITION, LightPosition[2]); //
-	//glLightfv(GL_LIGHT0, GL_LIGHT_AN, )
-	glLightf(GL_LIGHT2, GL_SHININESS, 255);
-	glEnable(GL_LIGHT2); // Habilita a luz 2
+	glEnable(GL_LIGHT0); // Habilita a luz 2
 
 	/////////////////////////////////////////////////////////////
 	// a. Modelagem de objetos usando Modo Imediato(glVertex) //
@@ -217,8 +221,6 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	//////////////////////////////////////////////////////// 
 	
 
-	
-
 	// Renderizar a casa do CJ (b, c)
 	glPushMatrix();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -226,11 +228,35 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
 	pModel_CasaCJ->Draw();
 	glPopMatrix();
+
+	// Renderizar a casa do Ryder (b, c)
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glTranslatef(120.0f, 5.0f, 130.0f);
+	//glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	pModel_CasaRyder->Draw();
+	glPopMatrix();
+
+	//Renderizar a casa do Sweet (b, c)
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glTranslatef(0.0f, -3.0f, -190.0f);
+	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	pModel_CasaSweet->Draw();
+	glPopMatrix();
 	
 	//Renderizar a Grove Street (b, c, f)
 	glPushMatrix();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	pModel_GroveStreet->Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glTranslatef(-60.0f, 2.0f, -180.0f);
+	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+	pTextures->ApplyTexture(7);
+	auxSolidSphere(1.0);
 	glPopMatrix();
 
 	///////////////////////////////////////////
@@ -247,7 +273,17 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	// i. Bump ou Normal Mapping //
 	//////////////////////////////
 	
+	// Desabilitar luz
+	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHTING);
 
+	// Renderizar o sol
+
+	glPushMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glTranslatef(LightPosition[0], LightPosition[1], LightPosition[2]);
+	auxSolidSphere(6.0);
+	glPopMatrix();
 
 	/////////////////////////////////
 	// k. Transparência(Blending) //
@@ -262,7 +298,7 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	// Configura função de Blending
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
+	glColor4f(1.0f, 1.0f, 1.0f, 0.6f);
 	
 	// RENDERIZAR O OCEANO
 	glPushAttrib(GL_TEXTURE_BIT);
@@ -309,19 +345,6 @@ int CSceneTrabalhoFinal::DrawGLScene(void)	// Função que desenha a cena
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 	glPopAttrib();
-
-	// Desabilitar luz
-	glDisable(GL_LIGHTING);
-
-
-	////////////////////////////////////////////////////////////////////
-	// l. Otimização de objetos usando DisplayLists ou Vertex Arrays //
-	//////////////////////////////////////////////////////////////////
-
-	glPushMatrix();
-	glPopMatrix();
-
-	
 	
 
 	////////////////////////////////////////////
